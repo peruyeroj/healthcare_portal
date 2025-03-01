@@ -1,8 +1,101 @@
 <div class="container">
   <h1>Schedule Appointment</h1>
+  
   <div class="content">
-    <p>Schedule your appointments here.</p>
-    <!-- Add appointment scheduling content here -->
+    <div class="appointment-form">
+      <div class="form-group">
+        <label for="appointmentType">Appointment Type:</label>
+        <select id="appointmentType" [(ngModel)]="appointmentType">
+          <option value="checkup">Regular Check-up</option>
+          <option value="followup">Follow-up Visit</option>
+          <option value="specialist">Specialist Consultation</option>
+          <option value="emergency">Urgent Care</option>
+        </select>
+      </div>
+      
+      <div class="calendar-container">
+        <h3>Select Date</h3>
+        <div class="calendar-header">
+          <button (click)="prevMonth()">&lt;</button>
+          <span>{{ currentMonth }} {{ currentYear }}</span>
+          <button (click)="nextMonth()">&gt;</button>
+        </div>
+        
+        <div class="weekdays">
+          <div class="weekday">Sun</div>
+          <div class="weekday">Mon</div>
+          <div class="weekday">Tue</div>
+          <div class="weekday">Wed</div>
+          <div class="weekday">Thu</div>
+          <div class="weekday">Fri</div>
+          <div class="weekday">Sat</div>
+        </div>
+        
+        <div class="calendar-days">
+          <div 
+            *ngFor="let day of calendarDays" 
+            class="day" 
+            [class.other-month]="day.otherMonth"
+            [class.selected]="day.date === selectedDate?.date"
+            [class.today]="day.isToday"
+            (click)="selectDate(day)">
+            {{ day.date }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="time-slots" *ngIf="selectedDate">
+        <h3>Available Time Slots for {{ selectedDate.fullDate }}</h3>
+        <div class="time-slot-container">
+          <div 
+            *ngFor="let slot of availableTimeSlots" 
+            class="time-slot" 
+            [class.selected]="selectedTimeSlot === slot"
+            (click)="selectTimeSlot(slot)">
+            {{ slot }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="appointment-summary" *ngIf="selectedDate && selectedTimeSlot">
+        <h3>Appointment Summary</h3>
+        <p><strong>Type:</strong> {{ getAppointmentTypeName() }}</p>
+        <p><strong>Date:</strong> {{ selectedDate.fullDate }}</p>
+        <p><strong>Time:</strong> {{ selectedTimeSlot }}</p>
+        
+        <button class="schedule-button" (click)="showConfirmation()">Schedule Appointment</button>
+      </div>
+    </div>
   </div>
+  
+  <!-- Confirmation Dialog -->
+  <div class="confirmation-dialog" *ngIf="showConfirmationDialog">
+    <div class="confirmation-dialog-content">
+      <h3>Confirm Your Appointment</h3>
+      <p>Please confirm your appointment details:</p>
+      
+      <div class="confirmation-details">
+        <p><strong>Type:</strong> {{ getAppointmentTypeName() }}</p>
+        <p><strong>Date:</strong> {{ selectedDate?.fullDate }}</p>
+        <p><strong>Time:</strong> {{ selectedTimeSlot }}</p>
+      </div>
+      
+      <div class="confirmation-buttons">
+        <button class="cancel-button" (click)="cancelConfirmation()">Cancel</button>
+        <button class="confirm-button" (click)="scheduleAppointment()">Confirm Appointment</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Success Message -->
+  <div class="confirmation-message" *ngIf="appointmentConfirmed">
+    <div class="confirmation-content">
+      <h3>Appointment Confirmed!</h3>
+      <p>Your {{ getAppointmentTypeName() }} appointment has been scheduled for {{ selectedDate?.fullDate }} at {{ selectedTimeSlot }}.</p>
+      <p>You will receive a confirmation email shortly.</p>
+      <button class="close-button" (click)="closeConfirmation()">Close</button>
+    </div>
+  </div>
+  
   <button class="back-button" routerLink="/home">Back to Home</button>
 </div>

@@ -128,3 +128,285 @@ a {
     font-size: 2rem;
   }
 }
+
+/* Appointments Section */
+.appointments-section {
+  margin-bottom: 40px;
+}
+
+.appointments-section h2 {
+  color: #4CAF50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.appointments-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.appointment-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.appointment-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  background-color: #6c757d;
+  color: white;
+}
+
+.appointment-status.upcoming {
+  background-color: #4CAF50;
+}
+
+.appointment-details {
+  padding: 20px;
+}
+
+.appointment-details h3 {
+  color: #333;
+  margin-bottom: 10px;
+  margin-right: 80px; /* Make room for the status badge */
+}
+
+.appointment-date, .appointment-time {
+  margin: 5px 0;
+  color: #555;
+}
+
+.appointment-actions {
+  padding: 0 20px 20px;
+  text-align: right;
+}
+
+.cancel-appointment {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.cancel-appointment:hover {
+  background-color: #c82333;
+}
+
+/* Appointments Tab Section */
+.appointments-tab-section {
+  margin-bottom: 40px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.tab-navigation {
+  display: flex;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab-button:hover {
+  background-color: #e9ecef;
+}
+
+.tab-button.active {
+  background-color: white;
+  color: #4CAF50;
+  border-bottom: 3px solid #4CAF50;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+/* Schedule Button */
+.schedule-button-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.schedule-button {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  padding: 20px;
+  text-decoration: none;
+  color: #333;
+  width: 100%;
+  max-width: 500px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.schedule-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.button-icon {
+  font-size: 3rem;
+  margin-right: 20px;
+}
+
+.button-text h3 {
+  color: #4CAF50;
+  margin-bottom: 5px;
+}
+
+.button-text p {
+  color: #666;
+  margin: 0;
+}
+
+/* No Appointments Message */
+.no-appointments {
+  text-align: center;
+  padding: 30px;
+}
+
+.no-appointments p {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.schedule-now-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body p {
+  margin: 0 0 15px;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.modal-note {
+  font-size: 0.9rem;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+  border-left: 3px solid #ffc107;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-button.secondary {
+  background-color: #f8f9fa;
+  color: #495057;
+  border: 1px solid #ced4da;
+}
+
+.modal-button.secondary:hover {
+  background-color: #e9ecef;
+}
+
+.modal-button.primary {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-button.primary:hover {
+  background-color: #c82333;
+}

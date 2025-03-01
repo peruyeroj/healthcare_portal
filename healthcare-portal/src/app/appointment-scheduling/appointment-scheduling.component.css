@@ -7,13 +7,200 @@
 h1 {
   color: #4CAF50;
   text-align: center;
+  margin-bottom: 30px;
+}
+
+h3 {
+  color: #4CAF50;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .content {
   background-color: #f8f9fa;
-  padding: 20px;
+  padding: 25px;
   border-radius: 8px;
   margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Calendar styles */
+.calendar-container {
+  margin: 20px 0;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.calendar-header span {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day {
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: white;
+  border: 1px solid #e9ecef;
+}
+
+.day:hover {
+  background-color: #f1f1f1;
+}
+
+.day.other-month {
+  color: #aaa;
+  background-color: #f8f9fa;
+}
+
+.day.selected {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.day.today {
+  border: 2px solid #4CAF50;
+  font-weight: bold;
+}
+
+/* Time slots */
+.time-slots {
+  margin: 20px 0;
+}
+
+.time-slot-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.time-slot {
+  text-align: center;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.time-slot:hover {
+  background-color: #f1f1f1;
+}
+
+.time-slot.selected {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Appointment summary */
+.appointment-summary {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+}
+
+.schedule-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.schedule-button:hover {
+  background-color: #45a049;
+}
+
+/* Confirmation message */
+.confirmation-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmation-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  text-align: center;
+}
+
+.close-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
 }
 
 .back-button {
@@ -23,4 +210,71 @@ h1 {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 20px;
+}
+
+/* Confirmation dialog */
+.confirmation-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmation-dialog-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.confirmation-details {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 48%;
+}
+
+.confirm-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 48%;
+  font-weight: bold;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.confirm-button:hover {
+  background-color: #45a049;
 }
