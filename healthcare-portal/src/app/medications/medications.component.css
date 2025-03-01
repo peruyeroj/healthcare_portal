@@ -1,26 +1,291 @@
 .container {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  font-family: 'Arial', sans-serif;
 }
 
 h1 {
-  color: #4CAF50;
-  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 32px;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
 }
 
 .content {
   background-color: #f8f9fa;
-  padding: 20px;
   border-radius: 8px;
-  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.back-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 15px;
+.medication-info {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #3498db;
+  transition: transform 0.2s ease;
+}
+
+.medication-info:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.medication-info h2 {
+  color: #3498db;
+  margin-top: 0;
+  font-size: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.medication-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.detail-item {
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-weight: bold;
+  color: #7f8c8d;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.detail-value {
+  color: #2c3e50;
+}
+
+.more-info {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+  margin-top: 15px;
+  border-left: 3px solid #2ecc71;
+}
+
+.more-info p {
+  margin: 8px 0;
+}
+
+button {
+  padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.learn-more-btn {
+  background-color: #3498db;
+  color: white;
+  margin-left: 10px;
+}
+
+.learn-more-btn:hover {
+  background-color: #2980b9;
+}
+
+.toggle-info-btn {
+  background-color: #f8f9fa;
+  color: #3498db;
+  border: 1px solid #3498db;
+  margin-top: 15px;
+}
+
+.toggle-info-btn:hover {
+  background-color: #eef2f7;
+}
+
+.back-button {
+  background-color: #7f8c8d;
+  color: white;
+  margin-top: 20px;
+}
+
+.back-button:hover {
+  background-color: #6c7a7d;
+}
+
+.renewal-request {
+  margin-top: 30px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.renewal-request h3 {
+  color: #2c3e50;
+  margin-top: 0;
+}
+
+.renew-btn {
+  background-color: #2ecc71;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.renew-btn:hover {
+  background-color: #27ae60;
+}
+
+.renewal-form {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.renewal-medications {
+  margin-top: 20px;
+}
+
+.renewal-medication-item {
+  background-color: white;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-left: 3px solid #f39c12;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container {
+  margin-right: 15px;
+}
+
+.medication-checkbox {
+  transform: scale(1.2);
+}
+
+.send-request-btn {
+  background-color: #e74c3c;
+  color: white;
+  margin-top: 20px;
+}
+
+.send-request-btn:hover {
+  background-color: #c0392b;
+}
+
+.cancel-btn {
+  background-color: #95a5a6;
+  color: white;
+  margin-right: 10px;
+}
+
+.cancel-btn:hover {
+  background-color: #7f8c8d;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.error-modal {
+  border-top: 5px solid #e74c3c;
+}
+
+.modal-header {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 20px;
+}
+
+.modal-body {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.success-icon, .error-icon {
+  margin-bottom: 20px;
+}
+
+.success-icon svg {
+  color: #2ecc71;
+}
+
+.error-icon svg {
+  color: #e74c3c;
+}
+
+.modal-details {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.modal-note {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin-top: 20px;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  text-align: right;
+}
+
+.modal-button {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.modal-button:hover {
+  background-color: #2980b9;
 }

@@ -1,8 +1,137 @@
 <div class="container">
-  <h1>Medications</h1>
+  <h1>Your Medications</h1>
+  
   <div class="content">
-    <p>Your current medications will be displayed here.</p>
-    <!-- Add medications content here -->
+    <div *ngIf="medications.length === 0">
+      <p>You don't have any medications on record.</p>
+    </div>
+    
+    <div *ngFor="let medication of medications">
+      <div class="medication-info">
+        <h2>
+          {{ medication.name }}
+          <button class="learn-more-btn" (click)="learnMore(medication)">Learn more</button>
+        </h2>
+        
+        <div class="medication-details">
+          <div class="detail-item">
+            <div class="detail-label">Date Started</div>
+            <div class="detail-value">{{ medication.dateStarted | date:'mediumDate' }}</div>
+          </div>
+          
+          <div class="detail-item">
+            <div class="detail-label">Ordered By</div>
+            <div class="detail-value">{{ medication.orderedBy }}</div>
+          </div>
+        </div>
+
+        <div *ngIf="medication.showMoreInfo" class="more-info">
+          <p><strong>Dose:</strong> {{ medication.dose }}</p>
+          <p><strong>Frequency:</strong> {{ medication.frequency }}</p>
+          <p><strong>Route:</strong> {{ medication.route }}</p>
+        </div>
+        
+        <button class="toggle-info-btn" (click)="toggleMoreInfo(medication)">
+          {{ medication.showMoreInfo ? 'Hide details' : 'Show details' }}
+        </button>
+      </div>
+    </div>
   </div>
+  
+  <div class="renewal-request">
+    <button class="renew-btn" (click)="initiateRenewal()" *ngIf="!renewalInProgress">Request Medication Renewal</button>
+    
+    <div class="renewal-form" *ngIf="renewalInProgress">
+      <h3>Medication Renewal Request</h3>
+      
+      <div>
+        <label for="doctor-select">Who do you want to send the renewal request to?</label>
+        <select id="doctor-select" [(ngModel)]="selectedDoctor">
+          <option value="" disabled selected>Select a doctor</option>
+          <option *ngFor="let doctor of doctors" [value]="doctor.name">{{ doctor.name }}</option>
+        </select>
+      </div>
+
+      <div>
+        <h4>Which prescription(s) would you like to renew?</h4>
+        <div class="renewal-medications">
+          <div class="renewal-medication-item" *ngFor="let med of medications">
+            <div class="checkbox-container">
+              <input type="checkbox" [(ngModel)]="med.selected" class="medication-checkbox" id="med-{{med.name}}">
+            </div>
+            <div>
+              <label for="med-{{med.name}}"><strong>{{ med.name }}</strong></label>
+              <p><strong>Ordered By:</strong> {{ med.orderedBy }}</p>
+              <p><strong>Date Started:</strong> {{ med.dateStarted | date:'mediumDate' }}</p>
+              
+              <div *ngIf="med.showMoreInfo" class="more-info">
+                <p><strong>Dose:</strong> {{ med.dose }}</p>
+                <p><strong>Frequency:</strong> {{ med.frequency }}</p>
+                <p><strong>Route:</strong> {{ med.route }}</p>
+              </div>
+              
+              <button class="toggle-info-btn" (click)="toggleMoreInfo(med)">
+                {{ med.showMoreInfo ? 'Hide details' : 'Show details' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 20px;">
+        <button class="cancel-btn" (click)="renewalInProgress = false">Cancel</button>
+        <button class="send-request-btn" (click)="sendRenewalRequest()" [disabled]="!selectedDoctor">Send to doctor</button>
+      </div>
+    </div>
+  </div>
+  
   <button class="back-button" routerLink="/home">Back to Home</button>
+</div>
+
+<!-- Success Notification Modal -->
+<div class="modal-overlay" *ngIf="showSuccessModal">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Request Submitted</h3>
+    </div>
+    <div class="modal-body">
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+      </div>
+      <p>Your renewal request has been successfully submitted.</p>
+      <p class="modal-details">
+        <strong>Request details:</strong><br>
+        {{ successMessage }}
+      </p>
+      <p class="modal-note">Your healthcare provider will review your request and contact you if additional information is needed.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-button" (click)="closeSuccessModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Error Notification Modal -->
+<div class="modal-overlay" *ngIf="showErrorModal">
+  <div class="modal-container error-modal">
+    <div class="modal-header">
+      <h3>Action Required</h3>
+    </div>
+    <div class="modal-body">
+      <div class="error-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+      </div>
+      <p>{{ errorMessage }}</p>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-button" (click)="closeErrorModal()">Close</button>
+    </div>
+  </div>
 </div>
