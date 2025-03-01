@@ -328,10 +328,12 @@ input:focus, select:focus {
   height: auto;
   border-radius: 4px;
   object-fit: contain;
+  margin-top: -10px;
 }
 
 .card-logo-small {
   width: 40px;
   height: auto;
   object-fit: contain;
+  margin-top: -10px;
 }

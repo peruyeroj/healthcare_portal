@@ -299,7 +299,7 @@ export class BillingComponent implements OnInit {
   
   getCardImagePath(cardNumber: string): string {
     const cardType = this.getCardType(cardNumber);
-    const baseUrl = 'assets/images/card-logos/';
+    const baseUrl = 'app/assets/images/card-logos/';
     
     switch (cardType) {
       case 'Visa':
@@ -317,7 +317,7 @@ export class BillingComponent implements OnInit {
       case 'UnionPay':
         return `${baseUrl}unionpay.png`;
       default:
-        return `${baseUrl}generic-card.png`;
+        return `${baseUrl}visa.png`;
     }
   }
 }
