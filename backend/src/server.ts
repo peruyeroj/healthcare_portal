@@ -5,9 +5,13 @@ const path = require("path"); // Utility for handling file paths
 const multer = require("multer"); // Middleware for handling file uploads
 const fs = require("fs"); // File system module for working with files
 const cors = require("cors"); // CORS middleware for cross-origin requests
+const mongoose = require("mongoose"); // MongoDB ODM
 
 // Import Google Generative AI SDK
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// Import authentication routes
+import authRoutes from './routes/authRoutes';
 
 // Define types for request and response
 interface CustomRequest {
@@ -52,6 +56,21 @@ app.use(express.json());
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
+
+// Connect to MongoDB
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/healthcare_portal';
+
+mongoose.connect(MONGODB_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error: any) => {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  });
+
+// Use authentication routes
+app.use('/api/auth', authRoutes);
 
 // Function to limit response to 4-5 sentences
 const limitResponseLength = (text: string): string => {
