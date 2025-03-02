@@ -40,13 +40,45 @@
       <label for="genderIdentity">Gender Identity (optional):</label>
       <input type="text" id="genderIdentity" formControlName="genderIdentity" />
     </div>
+    
+    <!-- Address fields -->
     <div class="form-group">
-      <label for="address">Home Address:</label>
+      <label for="address">Street Address:</label>
       <input type="text" id="address" formControlName="address" required />
       <div class="validation-error" *ngIf="personalInfoForm.get('address')?.invalid && personalInfoForm.get('address')?.touched">
-        Please enter your home address
+        Please enter your street address
       </div>
     </div>
+    
+    <div class="form-group">
+      <label for="town">Town/City:</label>
+      <input type="text" id="town" formControlName="town" required />
+      <div class="validation-error" *ngIf="personalInfoForm.get('town')?.invalid && personalInfoForm.get('town')?.touched">
+        Please enter your town or city
+      </div>
+    </div>
+    
+    <div class="form-row">
+      <div class="form-group state-group">
+        <label for="state">State:</label>
+        <select id="state" formControlName="state" required>
+          <option value="">Select State</option>
+          <option *ngFor="let state of states" [value]="state.code">{{ state.name }}</option>
+        </select>
+        <div class="validation-error" *ngIf="personalInfoForm.get('state')?.invalid && personalInfoForm.get('state')?.touched">
+          Please select your state
+        </div>
+      </div>
+      
+      <div class="form-group zip-group">
+        <label for="zipCode">Zip Code:</label>
+        <input type="text" id="zipCode" formControlName="zipCode" required placeholder="12345" />
+        <div class="validation-error" *ngIf="personalInfoForm.get('zipCode')?.invalid && personalInfoForm.get('zipCode')?.touched">
+          Please enter a valid zip code (e.g., 12345 or 12345-6789)
+        </div>
+      </div>
+    </div>
+    
     <div class="form-group">
       <label for="primaryPhone">Primary Phone Number:</label>
       <input
@@ -64,13 +96,6 @@
       <input type="tel" id="alternatePhone" formControlName="alternatePhone" />
       <div class="validation-error" *ngIf="personalInfoForm.get('alternatePhone')?.invalid && personalInfoForm.get('alternatePhone')?.touched">
         Please enter a valid phone number
-      </div>
-    </div>
-    <div class="form-group email-display">
-      <label>Email Address:</label>
-      <div class="readonly-field">
-        <span>{{ userEmail }}</span>
-        <small class="note">Email cannot be changed in this form. Please contact support for email changes.</small>
       </div>
     </div>
     <button type="submit" [disabled]="!personalInfoForm.valid || isSubmitting">

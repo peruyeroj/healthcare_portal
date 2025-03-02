@@ -18,7 +18,60 @@ export class PersonalInformationComponent implements OnInit {
   isEditing = false;
   submitError = '';
   submitSuccess = false;
-  userEmail: string = ''; // Store the user's email for display only
+  
+  // List of US states for dropdown
+  states = [
+    { name: 'Alabama', code: 'AL' },
+    { name: 'Alaska', code: 'AK' },
+    { name: 'Arizona', code: 'AZ' },
+    { name: 'Arkansas', code: 'AR' },
+    { name: 'California', code: 'CA' },
+    { name: 'Colorado', code: 'CO' },
+    { name: 'Connecticut', code: 'CT' },
+    { name: 'Delaware', code: 'DE' },
+    { name: 'Florida', code: 'FL' },
+    { name: 'Georgia', code: 'GA' },
+    { name: 'Hawaii', code: 'HI' },
+    { name: 'Idaho', code: 'ID' },
+    { name: 'Illinois', code: 'IL' },
+    { name: 'Indiana', code: 'IN' },
+    { name: 'Iowa', code: 'IA' },
+    { name: 'Kansas', code: 'KS' },
+    { name: 'Kentucky', code: 'KY' },
+    { name: 'Louisiana', code: 'LA' },
+    { name: 'Maine', code: 'ME' },
+    { name: 'Maryland', code: 'MD' },
+    { name: 'Massachusetts', code: 'MA' },
+    { name: 'Michigan', code: 'MI' },
+    { name: 'Minnesota', code: 'MN' },
+    { name: 'Mississippi', code: 'MS' },
+    { name: 'Missouri', code: 'MO' },
+    { name: 'Montana', code: 'MT' },
+    { name: 'Nebraska', code: 'NE' },
+    { name: 'Nevada', code: 'NV' },
+    { name: 'New Hampshire', code: 'NH' },
+    { name: 'New Jersey', code: 'NJ' },
+    { name: 'New Mexico', code: 'NM' },
+    { name: 'New York', code: 'NY' },
+    { name: 'North Carolina', code: 'NC' },
+    { name: 'North Dakota', code: 'ND' },
+    { name: 'Ohio', code: 'OH' },
+    { name: 'Oklahoma', code: 'OK' },
+    { name: 'Oregon', code: 'OR' },
+    { name: 'Pennsylvania', code: 'PA' },
+    { name: 'Rhode Island', code: 'RI' },
+    { name: 'South Carolina', code: 'SC' },
+    { name: 'South Dakota', code: 'SD' },
+    { name: 'Tennessee', code: 'TN' },
+    { name: 'Texas', code: 'TX' },
+    { name: 'Utah', code: 'UT' },
+    { name: 'Vermont', code: 'VT' },
+    { name: 'Virginia', code: 'VA' },
+    { name: 'Washington', code: 'WA' },
+    { name: 'West Virginia', code: 'WV' },
+    { name: 'Wisconsin', code: 'WI' },
+    { name: 'Wyoming', code: 'WY' }
+  ];
 
   constructor(
     private fb: FormBuilder, 
@@ -31,6 +84,9 @@ export class PersonalInformationComponent implements OnInit {
       gender: ['', Validators.required],
       genderIdentity: [''],
       address: ['', Validators.required],
+      town: ['', Validators.required],
+      state: ['', Validators.required],
+      zipCode: ['', [Validators.required, Validators.pattern(/^\d{5}(-\d{4})?$/)]],
       primaryPhone: ['', [Validators.required, Validators.pattern(/^\+?\d{10,15}$/)]],
       alternatePhone: ['', Validators.pattern(/^\+?\d{10,15}$/)]
     });
@@ -46,13 +102,43 @@ export class PersonalInformationComponent implements OnInit {
         console.log('Personal info loaded successfully:', data);
         if (data.personalInfoCompleted) {
           this.isEditing = true;
-          this.userEmail = data.email; // Store email for display only
+          
+          // Parse address into components if it exists
+          let address = '';
+          let town = '';
+          let state = '';
+          let zipCode = '';
+          
+          if (data.address) {
+            // Try to parse the address format: "street, town, state zipcode"
+            const addressParts = data.address.split(',');
+            if (addressParts.length >= 3) {
+              address = addressParts[0].trim();
+              town = addressParts[1].trim();
+              
+              // The last part should contain state and zip
+              const lastPart = addressParts[addressParts.length - 1].trim();
+              const stateZipMatch = lastPart.match(/([A-Z]{2})\s+(\d{5}(-\d{4})?)/);
+              
+              if (stateZipMatch) {
+                state = stateZipMatch[1];
+                zipCode = stateZipMatch[2];
+              }
+            } else {
+              // If we can't parse it, just put the whole thing in address
+              address = data.address;
+            }
+          }
+          
           this.personalInfoForm.patchValue({
             fullName: data.fullName,
             dob: this.formatDateForInput(data.dob),
             gender: data.gender,
             genderIdentity: data.genderIdentity,
-            address: data.address,
+            address: address,
+            town: town,
+            state: state,
+            zipCode: zipCode,
             primaryPhone: data.primaryPhone,
             alternatePhone: data.alternatePhone
           });
@@ -86,6 +172,20 @@ export class PersonalInformationComponent implements OnInit {
       this.submitError = '';
       
       const formData = {...this.personalInfoForm.value};
+      
+      // Combine address fields into a single address string
+      const address = formData.address || '';
+      const town = formData.town || '';
+      const state = formData.state || '';
+      const zipCode = formData.zipCode || '';
+      
+      // Format: "street, town, state zipcode"
+      formData.address = `${address}, ${town}, ${state} ${zipCode}`;
+      
+      // Remove the individual address fields before sending to API
+      delete formData.town;
+      delete formData.state;
+      delete formData.zipCode;
       
       console.log('Submitting form data:', formData);
       
