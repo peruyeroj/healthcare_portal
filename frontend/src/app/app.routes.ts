@@ -10,9 +10,10 @@ import { LoginComponent } from './auth/login.component';
 import { RegisterComponent } from './auth/register.component';
 import { authGuard } from './guards/auth.guard';
 import { InsuranceComponent } from './insurance/insurance.component';
+import { PersonalInformationComponent } from './personal-information/personal-information.component';
 
 export const routes: Routes = [
-    { path: 'home', component: HomepageComponent, canActivate: [authGuard] },
+  { path: 'home', component: HomepageComponent, canActivate: [authGuard] },
   { path: 'billing', component: BillingComponent, canActivate: [authGuard] },
   { path: 'appointments', component: AppointmentSchedulingComponent, canActivate: [authGuard] },
   { path: 'messaging', component: MessagingComponent, canActivate: [authGuard] },
@@ -21,5 +22,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'insurance', component: InsuranceComponent },
+  { path: 'personal-information', component: PersonalInformationComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' }
   { path: '', redirectTo: '/register', pathMatch: 'full' }
 ];

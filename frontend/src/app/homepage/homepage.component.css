@@ -1,8 +1,10 @@
 .navbar {
-  display: flex;
-  justify-content: space-around;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
   background-color: #f8f9fa;
-  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .icon {
@@ -409,4 +411,14 @@ a {
 
 .modal-button.primary:hover {
   background-color: #c82333;
+}
+
+button {
+  padding: 10px 15px;
+  width: 150px;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
