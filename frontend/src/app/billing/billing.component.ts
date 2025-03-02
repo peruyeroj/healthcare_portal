@@ -31,6 +31,8 @@ export class BillingComponent implements OnInit {
   cardForm: FormGroup;
   savedCards: PaymentCard[] = [];
   showAddCardForm = false;
+  showEditCardForm = false;
+  editingCardIndex: number | null = null;
   
   months: string[] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   years: string[] = [];
@@ -319,5 +321,26 @@ export class BillingComponent implements OnInit {
       default:
         return `${baseUrl}visa.png`;
     }
+  }
+
+  editCard(index: number): void {
+    this.editingCardIndex = index;
+    const cardToEdit = this.savedCards[index];
+    this.cardForm.patchValue(cardToEdit);
+    this.showEditCardForm = true;
+  }
+
+  updateCard(): void {
+    if (this.cardForm.valid && this.editingCardIndex !== null) {
+      this.savedCards[this.editingCardIndex] = this.cardForm.value;
+      this.saveSavedCards();
+      this.showEditCardForm = false;
+      this.editingCardIndex = null;
+    }
+  }
+
+  cancelEdit(): void {
+    this.showEditCardForm = false;
+    this.editingCardIndex = null;
   }
 }

@@ -1,182 +1,362 @@
 <div class="container">
   <h1>Billing</h1>
-  
+
   <div class="content">
     <div class="payment-methods">
       <h2>Payment Methods</h2>
-      
+
       <div class="saved-cards" *ngIf="savedCards.length > 0">
         <h3>Saved Payment Methods</h3>
         <div class="card-list">
           <div class="card-item" *ngFor="let card of savedCards; let i = index">
             <div class="card-info">
               <div class="card-type">
-                <img 
-                  [src]="getCardImagePath(card.cardNumber)" 
+                <img
+                  [src]="getCardImagePath(card.cardNumber)"
                   alt="Card Logo"
                   class="card-logo"
-                >
+                />
               </div>
               <div class="card-details">
                 <!-- Removed text labels, only showing card logos -->
               </div>
             </div>
             <div class="card-actions">
-              <button class="delete-card" (click)="deleteCard(i)">Remove</button>
+              <button class="edit-card" (click)="editCard(i)">Edit</button>
+              <button class="delete-card" (click)="deleteCard(i)">
+                Remove
+              </button>
             </div>
           </div>
         </div>
       </div>
-      
+
       <div class="no-cards" *ngIf="savedCards.length === 0">
         <p>You don't have any payment methods saved.</p>
       </div>
-      
-      <button class="add-card-button" (click)="toggleAddCardForm()" *ngIf="!showAddCardForm">
+
+      <button
+        class="add-card-button"
+        (click)="toggleAddCardForm()"
+        *ngIf="!showAddCardForm"
+      >
         + Add Payment Method
       </button>
     </div>
-    
+
     <div class="add-card-form" *ngIf="showAddCardForm">
       <h3>Add Payment Method</h3>
       <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            placeholder="John"
+            required
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              cardForm.get('firstName')?.invalid &&
+              cardForm.get('firstName')?.touched
+            "
+          >
+            Please enter your first name
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            placeholder="Doe"
+            required
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              cardForm.get('lastName')?.invalid &&
+              cardForm.get('lastName')?.touched
+            "
+          >
+            Please enter your last name
+          </div>
+        </div>
+
+        <div class="form-group">
           <label for="nameOnCard">Name on Card</label>
-          <input 
-            type="text" 
-            id="nameOnCard" 
-            formControlName="nameOnCard" 
+          <input
+            type="text"
+            id="nameOnCard"
+            formControlName="nameOnCard"
             placeholder="John Doe"
             required
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              cardForm.get('nameOnCard')?.invalid &&
+              cardForm.get('nameOnCard')?.touched
+            "
           >
-          <div class="error-message" *ngIf="cardForm.get('nameOnCard')?.invalid && cardForm.get('nameOnCard')?.touched">
             Please enter the name as it appears on your card
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="cardNumber">Card Number</label>
-          <input 
-            type="text" 
-            id="cardNumber" 
-            formControlName="cardNumber" 
+          <input
+            type="text"
+            id="cardNumber"
+            formControlName="cardNumber"
             placeholder="1234 5678 9012 3456"
             maxlength="19"
             (input)="formatCardNumber($event)"
             required
+          />
+          <div
+            class="card-type-indicator"
+            *ngIf="cardForm.get('cardNumber')?.value"
           >
-          <div class="card-type-indicator" *ngIf="cardForm.get('cardNumber')?.value">
-            <img 
-              [src]="getCardImagePath(cardForm.get('cardNumber')?.value)" 
+            <img
+              [src]="getCardImagePath(cardForm.get('cardNumber')?.value)"
               alt="Card Logo"
               class="card-logo-small"
+            />
+          </div>
+          <div
+            class="error-message"
+            *ngIf="
+              cardForm.get('cardNumber')?.invalid &&
+              cardForm.get('cardNumber')?.touched
+            "
+          >
+            <span *ngIf="cardForm.get('cardNumber')?.errors?.['required']"
+              >Please enter a card number</span
+            >
+            <span
+              *ngIf="cardForm.get('cardNumber')?.errors?.['pattern'] || cardForm.get('cardNumber')?.errors?.['invalidCardNumber']"
+              >Please enter a valid card number</span
             >
           </div>
-          <div class="error-message" *ngIf="cardForm.get('cardNumber')?.invalid && cardForm.get('cardNumber')?.touched">
-            <span *ngIf="cardForm.get('cardNumber')?.errors?.['required']">Please enter a card number</span>
-            <span *ngIf="cardForm.get('cardNumber')?.errors?.['pattern'] || cardForm.get('cardNumber')?.errors?.['invalidCardNumber']">Please enter a valid card number</span>
-          </div>
         </div>
-        
+
         <div class="form-row">
           <div class="form-group expiry">
             <label for="expiryMonth">Expiration Date</label>
             <div class="expiry-inputs">
               <select id="expiryMonth" formControlName="expiryMonth" required>
                 <option value="" disabled selected>MM</option>
-                <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+                <option *ngFor="let month of months" [value]="month">
+                  {{ month }}
+                </option>
               </select>
               <span class="expiry-separator">/</span>
               <select id="expiryYear" formControlName="expiryYear" required>
                 <option value="" disabled selected>YY</option>
-                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                <option *ngFor="let year of years" [value]="year">
+                  {{ year }}
+                </option>
               </select>
             </div>
-            <div class="error-message" *ngIf="(cardForm.get('expiryMonth')?.invalid && cardForm.get('expiryMonth')?.touched) || 
-                                             (cardForm.get('expiryYear')?.invalid && cardForm.get('expiryYear')?.touched)">
+            <div
+              class="error-message"
+              *ngIf="
+                (cardForm.get('expiryMonth')?.invalid &&
+                  cardForm.get('expiryMonth')?.touched) ||
+                (cardForm.get('expiryYear')?.invalid &&
+                  cardForm.get('expiryYear')?.touched)
+              "
+            >
               Please select a valid expiration date
             </div>
           </div>
-          
+
           <div class="form-group cvv">
             <label for="cvv">Security Code (CVV)</label>
-            <input 
-              type="text" 
-              id="cvv" 
-              formControlName="cvv" 
+            <input
+              type="text"
+              id="cvv"
+              formControlName="cvv"
               placeholder="123"
               maxlength="4"
               required
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                cardForm.get('cvv')?.invalid && cardForm.get('cvv')?.touched
+              "
             >
-            <div class="error-message" *ngIf="cardForm.get('cvv')?.invalid && cardForm.get('cvv')?.touched">
               Please enter a valid security code
             </div>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label for="billingAddress">Billing Address</label>
-          <input 
-            type="text" 
-            id="billingAddress" 
-            formControlName="billingAddress" 
+          <input
+            type="text"
+            id="billingAddress"
+            formControlName="billingAddress"
             placeholder="123 Main St"
             required
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              cardForm.get('billingAddress')?.invalid &&
+              cardForm.get('billingAddress')?.touched
+            "
           >
-          <div class="error-message" *ngIf="cardForm.get('billingAddress')?.invalid && cardForm.get('billingAddress')?.touched">
             Please enter your billing address
           </div>
         </div>
-        
+
         <div class="form-row">
           <div class="form-group city">
             <label for="city">City</label>
-            <input 
-              type="text" 
-              id="city" 
-              formControlName="city" 
+            <input
+              type="text"
+              id="city"
+              formControlName="city"
               placeholder="Anytown"
               required
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                cardForm.get('city')?.invalid && cardForm.get('city')?.touched
+              "
             >
-            <div class="error-message" *ngIf="cardForm.get('city')?.invalid && cardForm.get('city')?.touched">
               Please enter your city
             </div>
           </div>
-          
+
           <div class="form-group state">
             <label for="state">State</label>
             <select id="state" formControlName="state" required>
               <option value="" disabled selected>Select State</option>
-              <option *ngFor="let state of states" [value]="state.abbreviation">{{ state.name }}</option>
+              <option *ngFor="let state of states" [value]="state.abbreviation">
+                {{ state.name }}
+              </option>
             </select>
-            <div class="error-message" *ngIf="cardForm.get('state')?.invalid && cardForm.get('state')?.touched">
+            <div
+              class="error-message"
+              *ngIf="
+                cardForm.get('state')?.invalid && cardForm.get('state')?.touched
+              "
+            >
               Please select your state
             </div>
           </div>
-          
+
           <div class="form-group zip">
             <label for="zipCode">ZIP Code</label>
-            <input 
-              type="text" 
-              id="zipCode" 
-              formControlName="zipCode" 
+            <input
+              type="text"
+              id="zipCode"
+              formControlName="zipCode"
               placeholder="12345"
               maxlength="10"
               required
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                cardForm.get('zipCode')?.invalid &&
+                cardForm.get('zipCode')?.touched
+              "
             >
-            <div class="error-message" *ngIf="cardForm.get('zipCode')?.invalid && cardForm.get('zipCode')?.touched">
               Please enter a valid ZIP code
             </div>
           </div>
         </div>
-        
+
         <div class="form-actions">
-          <button type="button" class="cancel-button" (click)="toggleAddCardForm()">Cancel</button>
-          <button type="submit" class="save-button" [disabled]="cardForm.invalid">Save Payment Method</button>
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="toggleAddCardForm()"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="save-button"
+            [disabled]="cardForm.invalid"
+          >
+            Save Payment Method
+          </button>
         </div>
       </form>
     </div>
+
+    <div *ngIf="showEditCardForm">
+      <h3>Edit Payment Method</h3>
+      <form [formGroup]="cardForm" (ngSubmit)="updateCard()">
+        <div class="form-group">
+          <label for="nameOnCard">Name on Card:</label>
+          <input
+            type="text"
+            id="nameOnCard"
+            formControlName="nameOnCard"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="cardNumber">Card Number:</label>
+          <input
+            type="text"
+            id="cardNumber"
+            formControlName="cardNumber"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="expiryMonth">Expiry Month:</label>
+          <select id="expiryMonth" formControlName="expiryMonth" required>
+            <option *ngFor="let month of months" [value]="month">
+              {{ month }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="expiryYear">Expiry Year:</label>
+          <select id="expiryYear" formControlName="expiryYear" required>
+            <option *ngFor="let year of years" [value]="year">
+              {{ year }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="cvv">CVV:</label>
+          <input type="text" id="cvv" formControlName="cvv" required />
+        </div>
+        <div class="form-group">
+          <label for="billingAddress">Billing Address:</label>
+          <input
+            type="text"
+            id="billingAddress"
+            formControlName="billingAddress"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="zipCode">ZIP Code:</label>
+          <input type="text" id="zipCode" formControlName="zipCode" required />
+        </div>
+        <button type="submit" [disabled]="cardForm.invalid">
+          Update Payment Method
+        </button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </form>
+    </div>
   </div>
-  
+
   <button class="back-button" routerLink="/home">Back to Home</button>
 </div>
