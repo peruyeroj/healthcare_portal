@@ -4,6 +4,7 @@ import { AppointmentSchedulingComponent } from './appointment-scheduling/appoint
 import { MessagingComponent } from './messaging/messaging.component';
 import { MedicationsComponent } from './medications/medications.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { HealthBotComponent } from './health-bot/health-bot.component';
 
 export const routes: Routes = [
     { path: 'home', component: HomepageComponent },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'appointments', component: AppointmentSchedulingComponent },
   { path: 'messaging', component: MessagingComponent },
   { path: 'medications', component: MedicationsComponent },
+  { path: 'health-bot', component: HealthBotComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }
 ];
