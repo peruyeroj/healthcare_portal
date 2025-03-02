@@ -8,6 +8,17 @@ export interface IUser extends mongoose.Document {
   firstName: string;
   lastName: string;
   dateOfBirth?: Date;
+  gender?: string;
+  genderIdentity?: string;
+  address?: string;
+  primaryPhone?: string;
+  alternatePhone?: string;
+  personalInfoCompleted?: boolean;
+  // Insurance fields
+  insuranceCompany?: string;
+  insuranceId?: string;
+  groupNumber?: string;
+  insuranceInfoCompleted?: boolean;
   comparePassword(candidatePassword: string): Promise<boolean>;
   getFullName(): string;
 }
@@ -39,6 +50,42 @@ const UserSchema = new mongoose.Schema({
   },
   dateOfBirth: {
     type: Date
+  },
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'other', '']
+  },
+  genderIdentity: {
+    type: String
+  },
+  address: {
+    type: String
+  },
+  primaryPhone: {
+    type: String,
+    match: [/^\+?\d{10,15}$/, 'Please provide a valid phone number']
+  },
+  alternatePhone: {
+    type: String,
+    match: [/^\+?\d{10,15}$/, 'Please provide a valid phone number']
+  },
+  personalInfoCompleted: {
+    type: Boolean,
+    default: false
+  },
+  // Insurance fields
+  insuranceCompany: {
+    type: String
+  },
+  insuranceId: {
+    type: String
+  },
+  groupNumber: {
+    type: String
+  },
+  insuranceInfoCompleted: {
+    type: Boolean,
+    default: false
   },
   createdAt: {
     type: Date,
@@ -78,4 +125,4 @@ UserSchema.methods.getFullName = function(): string {
 
 // Create and export the User model
 const User = mongoose.model<IUser>('User', UserSchema);
-export default User; 
+export default User;

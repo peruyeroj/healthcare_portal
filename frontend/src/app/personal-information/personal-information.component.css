@@ -15,6 +15,7 @@
 label {
   display: block;
   margin-bottom: 8px;
+  font-weight: 500;
 }
 
 input[type="text"], input[type="date"], input[type="tel"], input[type="email"], select {
@@ -22,6 +23,13 @@ input[type="text"], input[type="date"], input[type="tel"], input[type="email"], 
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 16px;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.25);
 }
 
 button {
@@ -33,13 +41,78 @@ button {
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 10px;
+  font-size: 16px;
+  transition: background-color 0.2s;
 }
 
 button:hover {
   background-color: #45a049;
 }
 
+button:disabled {
+  background-color: #a5d6a7;
+  cursor: not-allowed;
+}
+
+.back-button {
+  background-color: #6c757d;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}
+
 h1 {
   text-align: center;
   color: #4CAF50;
-} 
+  margin-bottom: 30px;
+}
+
+.validation-error {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.error-message-container {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Styles for the read-only email field */
+.readonly-field {
+  background-color: #e9ecef;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+}
+
+.readonly-field span {
+  font-weight: 500;
+  color: #495057;
+}
+
+.note {
+  display: block;
+  margin-top: 5px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+.email-display {
+  margin-bottom: 30px;
+}

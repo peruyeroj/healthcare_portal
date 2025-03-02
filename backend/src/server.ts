@@ -16,6 +16,8 @@ import authRoutes from './routes/authRoutes';
 import appointmentRoutes from './routes/appointmentRoutes';
 // Import message routes
 import messageRoutes from './routes/messageRoutes';
+// Import user routes
+import userRoutes from './routes/userRoutes';
 
 // Define types for request and response
 interface CustomRequest {
@@ -79,6 +81,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 // Set up message routes
 app.use('/api/messages', messageRoutes);
+// Set up user routes
+app.use('/api/users', userRoutes);
 
 // Function to limit response to 4-5 sentences
 const limitResponseLength = (text: string): string => {

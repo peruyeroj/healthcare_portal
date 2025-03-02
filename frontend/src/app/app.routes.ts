@@ -11,6 +11,7 @@ import { RegisterComponent } from './auth/register.component';
 import { authGuard } from './guards/auth.guard';
 import { InsuranceComponent } from './insurance/insurance.component';
 import { PersonalInformationComponent } from './personal-information/personal-information.component';
+import { PendingMedicationsComponent } from './medications/pending-medications/pending-medications.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomepageComponent, canActivate: [authGuard] },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'appointments', component: AppointmentSchedulingComponent, canActivate: [authGuard] },
   { path: 'messaging', component: MessagingComponent, canActivate: [authGuard] },
   { path: 'medications', component: MedicationsComponent, canActivate: [authGuard] },
+  { path: 'medications/pending', component: PendingMedicationsComponent, canActivate: [authGuard] },
   { path: 'health-bot', component: HealthBotComponent, canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

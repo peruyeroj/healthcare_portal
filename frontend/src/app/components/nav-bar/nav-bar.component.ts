@@ -10,7 +10,8 @@ import { AuthService } from '../../services/auth.service';
   template: `
     <nav class="navbar">
       <div class="navbar-brand">
-        <a routerLink="/home" class="navbar-logo">Healthcare Portal</a>
+        <img [src]="logoPath" alt="HenHacks Logo" class="navbar-logo-img">
+        <a routerLink="/home" class="navbar-logo">HenMed Portal</a>
       </div>
       <div class="navbar-menu">
         <div class="navbar-end">
@@ -36,6 +37,11 @@ import { AuthService } from '../../services/auth.service';
     .navbar-brand {
       display: flex;
       align-items: center;
+    }
+    
+    .navbar-logo-img {
+      height: 30px;
+      margin-right: 10px;
     }
     
     .navbar-logo {
@@ -73,6 +79,7 @@ import { AuthService } from '../../services/auth.service';
 export class NavBarComponent {
   isAuthenticated = false;
   private isBrowser: boolean;
+  logoPath = '/app/assets/images/card-logos/henhacks.png';
   
   constructor(
     public authService: AuthService,

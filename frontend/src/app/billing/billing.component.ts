@@ -34,6 +34,10 @@ export class BillingComponent implements OnInit {
   showEditCardForm = false;
   editingCardIndex: number | null = null;
   
+  // Add confirmation dialog properties
+  showConfirmationDialog = false;
+  cardToDeleteIndex: number | null = null;
+  
   months: string[] = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
   years: string[] = [];
   
@@ -161,10 +165,22 @@ export class BillingComponent implements OnInit {
   }
   
   deleteCard(index: number): void {
-    if (confirm('Are you sure you want to remove this payment method?')) {
-      this.savedCards.splice(index, 1);
+    // Show the confirmation dialog instead of using the browser's confirm
+    this.cardToDeleteIndex = index;
+    this.showConfirmationDialog = true;
+  }
+  
+  confirmDeleteCard(): void {
+    if (this.cardToDeleteIndex !== null) {
+      this.savedCards.splice(this.cardToDeleteIndex, 1);
       this.saveSavedCards();
+      this.closeConfirmationDialog();
     }
+  }
+  
+  closeConfirmationDialog(): void {
+    this.showConfirmationDialog = false;
+    this.cardToDeleteIndex = null;
   }
   
   getCardType(cardNumber: string): string {

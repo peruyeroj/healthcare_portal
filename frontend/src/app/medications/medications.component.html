@@ -39,8 +39,6 @@
   </div>
   
   <div class="renewal-request">
-    <button class="renew-btn" (click)="initiateRenewal()" *ngIf="!renewalInProgress">Request Medication Renewal</button>
-    
     <div class="renewal-form" *ngIf="renewalInProgress">
       <h3>Medication Renewal Request</h3>
       
@@ -85,7 +83,11 @@
     </div>
   </div>
   
-  <button class="back-button" routerLink="/home">Back to Home</button>
+  <div class="bottom-actions">
+    <button class="renew-btn" (click)="initiateRenewal()" *ngIf="!renewalInProgress">Request Medication Renewal</button>
+    <button class="pending-btn" routerLink="/medications/pending">View Pending Approvals</button>
+    <button class="back-button" routerLink="/home">Back to Home</button>
+  </div>
 </div>
 
 <!-- Success Notification Modal -->
