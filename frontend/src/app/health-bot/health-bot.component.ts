@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HealthBotService } from '../services/health-bot.service';
 
@@ -13,7 +13,7 @@ interface ChatMessage {
 @Component({
   selector: 'app-health-bot',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './health-bot.component.html',
   styleUrl: './health-bot.component.css'
 })

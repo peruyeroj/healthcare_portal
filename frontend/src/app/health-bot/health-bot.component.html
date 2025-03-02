@@ -1,25 +1,37 @@
 <div class="health-bot-container">
   <div class="health-bot-header">
     <h1>Health Assistant</h1>
-    <p>Ask me any health-related questions. I can provide general health information, wellness tips, and guidance on healthy lifestyle choices.</p>
+    <p>
+      Ask me any health-related questions. I can provide general health
+      information, wellness tips, and guidance on healthy lifestyle choices.
+    </p>
   </div>
-  
+
   <div class="chat-container">
     <div class="chat-messages-container" #chatMessagesContainer>
       <ng-container *ngIf="chatMessages && chatMessages.length > 0">
-        <div *ngFor="let message of chatMessages" 
-             class="message" 
-             [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+        <div
+          *ngFor="let message of chatMessages"
+          class="message"
+          [ngClass]="{
+            'user-message': message.isUser,
+            'bot-message': !message.isUser
+          }"
+        >
           <div class="message-content">
             <div class="message-header">
-              <span class="sender">{{ message.isUser ? 'You' : 'Health Assistant' }}</span>
-              <span class="timestamp">{{ message.timestamp | date:'short' }}</span>
+              <span class="sender">{{
+                message.isUser ? "You" : "Health Assistant"
+              }}</span>
+              <span class="timestamp">{{
+                message.timestamp | date : "short"
+              }}</span>
             </div>
             <div class="message-text">{{ message.content }}</div>
           </div>
         </div>
       </ng-container>
-      
+
       <div *ngIf="isLoading" class="loading-indicator">
         <div class="typing-indicator">
           <span></span>
@@ -28,29 +40,44 @@
         </div>
       </div>
     </div>
-    
+
     <div class="input-container">
       <div *ngIf="selectedFile" class="selected-file">
         <span>{{ selectedFile.name }}</span>
         <button class="clear-file-btn" (click)="clearFile()">✕</button>
       </div>
-      
+
       <div class="message-input-container">
         <label for="file-upload" class="file-upload-btn">
           <i class="file-icon">📎</i>
         </label>
-        <input id="file-upload" type="file" (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-        
-        <input type="text" 
-               class="message-input" 
-               placeholder="Type your health question here..." 
-               [(ngModel)]="userMessage" 
-               (keyup.enter)="sendMessage()">
-        
-        <button class="send-btn" [disabled]="!userMessage.trim() || isLoading" (click)="sendMessage()">
+        <input
+          id="file-upload"
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          style="display: none"
+        />
+
+        <input
+          type="text"
+          class="message-input"
+          placeholder="Type your health question here..."
+          [(ngModel)]="userMessage"
+          (keyup.enter)="sendMessage()"
+        />
+
+        <button
+          class="send-btn"
+          [disabled]="!userMessage.trim() || isLoading"
+          (click)="sendMessage()"
+        >
           <i class="send-icon">➤</i>
         </button>
       </div>
     </div>
+  </div>
+  <div class="back-button-container">
+    <button class="back-button" routerLink="/home">Back</button>
   </div>
 </div>
