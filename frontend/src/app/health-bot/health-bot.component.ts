@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { CommonModule} from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HealthBotService } from '../services/health-bot.service';
 
@@ -26,7 +26,10 @@ export class HealthBotComponent implements OnInit, AfterViewChecked {
   selectedFile: File | null = null;
   private shouldScrollToBottom: boolean = false;
 
-  constructor(private healthBotService: HealthBotService) {
+  constructor(
+    private healthBotService: HealthBotService,
+    private route: ActivatedRoute
+  ) {
     // Initialize with an empty array to ensure it's always an array
     this.chatMessages = [];
   }
@@ -34,6 +37,21 @@ export class HealthBotComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     // Add a welcome message on initialization
     this.addMessage('Hello! I am your healthcare assistant. How can I help you today?', false);
+    
+    // Check for medication query parameters
+    this.route.queryParams.subscribe(params => {
+      if (params['medication']) {
+        // If we have a medication parameter, automatically send a query about it
+        const medicationName = params['medication'];
+        const query = params['query'] || `Tell me about the medication ${medicationName}`;
+        
+        // Set a small timeout to ensure the welcome message is displayed first
+        setTimeout(() => {
+          this.userMessage = query;
+          this.sendMessage();
+        }, 500);
+      }
+    });
   }
 
   ngAfterViewChecked(): void {

@@ -80,12 +80,15 @@ export class MedicationsComponent {
     this.showErrorModal = false;
   }
 
-  learnMore(medication: { name: string; }) {
+  learnMore(medication: { name: string; dose: string; frequency: string; }) {
+    // Create a detailed query about the medication including dosage and frequency
+    const query = `Tell me about ${medication.name} (${medication.dose}, taken ${medication.frequency}). Please include information about what it's used for, common side effects, important warnings, and when to contact a doctor.`;
+    
     // Navigate to health_bot component with medication info
     this.router.navigate(['/health-bot'], { 
       queryParams: { 
         medication: medication.name,
-        query: `Tell me about ${medication.name}`
+        query: query
       } 
     });
   }

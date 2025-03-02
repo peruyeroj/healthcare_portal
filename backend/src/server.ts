@@ -67,6 +67,57 @@ const limitResponseLength = (text: string): string => {
   return text;
 };
 
+// Function to check if a message is a medication query
+const isMedicationQuery = (message: string): boolean => {
+  const lowerMsg = message.toLowerCase();
+  return (
+    lowerMsg.includes("medication") || 
+    lowerMsg.includes("drug") || 
+    lowerMsg.includes("medicine") || 
+    lowerMsg.includes("pill") ||
+    lowerMsg.includes("tell me about") ||
+    lowerMsg.includes("what is") ||
+    lowerMsg.includes("information on")
+  ) && (
+    // Common medications
+    lowerMsg.includes("lisinopril") ||
+    lowerMsg.includes("metformin") ||
+    lowerMsg.includes("atorvastatin") ||
+    lowerMsg.includes("levothyroxine") ||
+    // Add more medications as needed
+    lowerMsg.includes("aspirin") ||
+    lowerMsg.includes("ibuprofen") ||
+    lowerMsg.includes("acetaminophen") ||
+    lowerMsg.includes("tylenol") ||
+    lowerMsg.includes("advil") ||
+    lowerMsg.includes("lipitor") ||
+    lowerMsg.includes("zocor") ||
+    lowerMsg.includes("simvastatin") ||
+    lowerMsg.includes("crestor") ||
+    lowerMsg.includes("rosuvastatin") ||
+    lowerMsg.includes("synthroid") ||
+    lowerMsg.includes("prinivil") ||
+    lowerMsg.includes("zestril") ||
+    lowerMsg.includes("glucophage")
+  );
+};
+
+// Enhanced medication prompt to guide the AI's responses for medication queries
+const medicationPrompt = `
+You are a helpful healthcare assistant providing information about medications. For each medication query, please structure your response to include:
+
+1. Brief description of what the medication is and its primary use
+2. Common side effects (mention only the most common ones)
+3. Important precautions or warnings
+4. When to consult a healthcare provider
+
+Remember to:
+- Keep your response concise (4-5 sentences maximum)
+- Use simple, clear language
+- Emphasize that this is general information and not medical advice
+- Remind users to consult their healthcare provider for specific guidance
+`;
+
 // Health-specific system prompt to guide the AI's responses
 const healthSystemPrompt = `You are a helpful healthcare assistant. Provide general health information, wellness tips, and guidance on healthy lifestyle choices. Remember to provide evidence-based information when possible, clarify that you're not a substitute for professional medical advice, be empathetic, respect privacy, avoid making definitive diagnoses, and suggest consulting healthcare professionals for specific medical concerns.`;
 
@@ -119,7 +170,10 @@ app.post("/health", uploads.single("file"), async (req: CustomRequest, res: Cust
     // Get the Generative AI model
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
-    // Create a chat session with the health system prompt
+    // Create a chat session with the appropriate system prompt based on query type
+    const isMedQuery = isMedicationQuery(userInput);
+    const systemPrompt = isMedQuery ? medicationPrompt : healthSystemPrompt;
+    
     const chat = model.startChat({
       generationConfig: { temperature: 0.7 },
       safetySettings: [
@@ -143,7 +197,7 @@ app.post("/health", uploads.single("file"), async (req: CustomRequest, res: Cust
     });
 
     // Send an initial message to set the context
-    await chat.sendMessage("You are a helpful healthcare assistant. Please provide accurate health information and remember you're not a substitute for professional medical advice. Limit your responses to 4-5 sentences maximum.");
+    await chat.sendMessage(systemPrompt + " Limit your responses to 4-5 sentences maximum.");
 
     // Initialize the prompt with user input
     let parts: (string | InlineImageData)[] = [userInput];
@@ -199,7 +253,10 @@ app.get("/health", async (req: CustomRequest, res: CustomResponse) => {
     // Get the Generative AI model
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
-    // Create a chat session with the health system prompt
+    // Create a chat session with the appropriate system prompt based on query type
+    const isMedQuery = isMedicationQuery(userInput as string);
+    const systemPrompt = isMedQuery ? medicationPrompt : healthSystemPrompt;
+    
     const chat = model.startChat({
       generationConfig: { temperature: 0.7 },
       safetySettings: [
@@ -223,7 +280,7 @@ app.get("/health", async (req: CustomRequest, res: CustomResponse) => {
     });
 
     // Send an initial message to set the context
-    await chat.sendMessage("You are a helpful healthcare assistant. Please provide accurate health information and remember you're not a substitute for professional medical advice. Limit your responses to 4-5 sentences maximum.");
+    await chat.sendMessage(systemPrompt + " Limit your responses to 4-5 sentences maximum.");
 
     // Generate content using the AI model in chat mode
     const response = await chat.sendMessage(userInput);
