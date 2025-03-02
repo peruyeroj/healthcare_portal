@@ -3,24 +3,39 @@
     <h1>Healthcare Portal</h1>
     <p class="tagline">Your health, in your hands</p>
   </header>
-  
+
   <!-- Appointments Tab Section -->
   <section class="appointments-tab-section">
     <div class="tab-navigation">
-      <button class="tab-button" [class.active]="activeTab === 'current'" (click)="setActiveTab('current')">
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'current'"
+        (click)="setActiveTab('current')"
+      >
         Your Appointments
       </button>
-      <button class="tab-button" [class.active]="activeTab === 'schedule'" (click)="setActiveTab('schedule')">
+      <button
+        class="tab-button"
+        [class.active]="activeTab === 'schedule'"
+        (click)="setActiveTab('schedule')"
+      >
         Schedule Appointment
       </button>
     </div>
-    
+
     <!-- Current Appointments Tab Content -->
     <div class="tab-content" *ngIf="activeTab === 'current'">
       <div class="appointments-list" *ngIf="appointments.length > 0">
         <div class="appointment-card" *ngFor="let appointment of appointments">
-          <div class="appointment-status" [class.upcoming]="isUpcoming(appointment.date, appointment.time)">
-            {{ isUpcoming(appointment.date, appointment.time) ? 'Upcoming' : 'Past' }}
+          <div
+            class="appointment-status"
+            [class.upcoming]="isUpcoming(appointment.date, appointment.time)"
+          >
+            {{
+              isUpcoming(appointment.date, appointment.time)
+                ? "Upcoming"
+                : "Past"
+            }}
           </div>
           <div class="appointment-details">
             <h3>{{ appointment.typeName }}</h3>
@@ -31,18 +46,28 @@
               <strong>Time:</strong> {{ appointment.time }}
             </p>
           </div>
-          <div class="appointment-actions" *ngIf="isUpcoming(appointment.date, appointment.time)">
-            <button class="cancel-appointment" (click)="showCancellationModal(appointment.id)">Cancel</button>
+          <div
+            class="appointment-actions"
+            *ngIf="isUpcoming(appointment.date, appointment.time)"
+          >
+            <button
+              class="cancel-appointment"
+              (click)="showCancellationModal(appointment.id)"
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </div>
-      
+
       <div class="no-appointments" *ngIf="appointments.length === 0">
         <p>You don't have any appointments scheduled.</p>
-        <button class="schedule-now-button" (click)="setActiveTab('schedule')">Schedule Now</button>
+        <button class="schedule-now-button" (click)="setActiveTab('schedule')">
+          Schedule Now
+        </button>
       </div>
     </div>
-    
+
     <!-- Schedule Appointment Tab Content -->
     <div class="tab-content" *ngIf="activeTab === 'schedule'">
       <div class="schedule-button-container">
@@ -56,37 +81,43 @@
       </div>
     </div>
   </section>
-  
+
   <div class="dashboard">
     <a routerLink="/messaging" class="dashboard-card">
       <div class="card-icon">💬</div>
       <h2>Messages</h2>
       <p>Communicate with your healthcare providers</p>
     </a>
-    
+
     <a routerLink="/billing" class="dashboard-card">
       <div class="card-icon">💳</div>
       <h2>Billing</h2>
       <p>View and manage your billing information</p>
     </a>
-    
+
     <a routerLink="/medications" class="dashboard-card">
       <div class="card-icon">💊</div>
       <h2>Medications</h2>
       <p>Track and manage your current medications</p>
     </a>
-    
+
     <a routerLink="/health-bot" class="dashboard-card">
       <div class="card-icon">🤖</div>
       <h2>Health Assistant</h2>
       <p>Get answers to your health questions</p>
     </a>
+
+    <a routerLink="/insurance" class="dashboard-card">
+      <div class="card-icon">🏥</div>
+      <h2>Insurance</h2>
+      <p>View and manage your insurance information</p>
+    </a>
   </div>
-  
+
   <footer class="footer">
     <p>&copy; 2024 Healthcare Portal. All rights reserved.</p>
   </footer>
-  
+
   <!-- Cancellation Confirmation Modal -->
   <div class="modal-overlay" *ngIf="showCancelModal">
     <div class="modal-container">
@@ -95,11 +126,21 @@
       </div>
       <div class="modal-body">
         <p>Are you sure you want to cancel this appointment?</p>
-        <p class="modal-note">Note: Cancellations made less than 24 hours before the appointment may incur a fee.</p>
+        <p class="modal-note">
+          Note: Cancellations made less than 24 hours before the appointment may
+          incur a fee.
+        </p>
       </div>
       <div class="modal-footer">
-        <button class="modal-button secondary" (click)="closeCancellationModal()">No, Keep Appointment</button>
-        <button class="modal-button primary" (click)="confirmCancellation()">Yes, Cancel Appointment</button>
+        <button
+          class="modal-button secondary"
+          (click)="closeCancellationModal()"
+        >
+          No, Keep Appointment
+        </button>
+        <button class="modal-button primary" (click)="confirmCancellation()">
+          Yes, Cancel Appointment
+        </button>
       </div>
     </div>
   </div>
