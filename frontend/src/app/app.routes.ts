@@ -23,6 +23,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'insurance', component: InsuranceComponent },
   { path: 'personal-information', component: PersonalInformationComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '', redirectTo: '/register', pathMatch: 'full' }
 ];
