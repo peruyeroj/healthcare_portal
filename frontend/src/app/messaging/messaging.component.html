@@ -1,8 +1,64 @@
 <div class="container">
   <h1>Messages</h1>
+  
   <div class="content">
-    <p>Your messages with healthcare providers will be displayed here.</p>
-    <!-- Add messaging content here -->
+    <!-- Doctor selection section -->
+    <div class="doctor-selection" *ngIf="!selectedDoctor && !showSuccessMessage">
+      <h2>Select a Doctor to Message</h2>
+      <div class="doctors-list">
+        <div class="doctor-card" *ngFor="let doctor of doctors" (click)="selectDoctor(doctor)">
+          <h3>{{ doctor.name }}</h3>
+          <p>{{ doctor.specialty }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message composition section -->
+    <div class="message-composition" *ngIf="selectedDoctor && !showSuccessMessage">
+      <div class="selected-doctor">
+        <h2>Messaging {{ selectedDoctor.name }}</h2>
+        <p>{{ selectedDoctor.specialty }}</p>
+      </div>
+      
+      <div class="message-form">
+        <textarea 
+          [(ngModel)]="messageContent" 
+          placeholder="Type your message here..." 
+          rows="6"
+        ></textarea>
+        
+        <div class="button-group">
+          <button class="back-button" (click)="selectedDoctor = null">Back to Doctors</button>
+          <button class="send-button" (click)="sendMessage()">Send Message</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success message -->
+    <div class="success-message" *ngIf="showSuccessMessage">
+      <div class="success-content">
+        <h2>Message Sent Successfully!</h2>
+        <p>Your message has been sent to {{ selectedDoctor?.name }}.</p>
+        <p>An email confirmation has been sent to your registered email address.</p>
+        <p>The doctor will review your message and respond as soon as possible.</p>
+        
+        <div class="button-group">
+          <button class="primary-button" (click)="startNewMessage()">Send Another Message</button>
+          <button class="back-button" routerLink="/home">Back to Home</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error message -->
+    <div class="error-modal" *ngIf="showErrorMessage">
+      <div class="error-content">
+        <h3>Error</h3>
+        <p>{{ errorDetails }}</p>
+        <button class="primary-button" (click)="closeErrorMessage()">OK</button>
+      </div>
+    </div>
   </div>
-  <button class="back-button" routerLink="/home">Back to Home</button>
+
+  <!-- Only show back button when not in success or composition mode -->
+  <button class="back-button" routerLink="/home" *ngIf="!selectedDoctor && !showSuccessMessage">Back to Home</button>
 </div>

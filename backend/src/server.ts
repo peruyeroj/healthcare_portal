@@ -14,6 +14,8 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 import authRoutes from './routes/authRoutes';
 // Import appointment routes
 import appointmentRoutes from './routes/appointmentRoutes';
+// Import message routes
+import messageRoutes from './routes/messageRoutes';
 
 // Define types for request and response
 interface CustomRequest {
@@ -71,10 +73,12 @@ mongoose.connect(MONGODB_URI)
     process.exit(1);
   });
 
-// Use authentication routes
+// Set up routes
 app.use('/api/auth', authRoutes);
-// Use appointment routes
+// Set up appointment routes
 app.use('/api/appointments', appointmentRoutes);
+// Set up message routes
+app.use('/api/messages', messageRoutes);
 
 // Function to limit response to 4-5 sentences
 const limitResponseLength = (text: string): string => {

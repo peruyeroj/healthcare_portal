@@ -7,6 +7,12 @@
 h1 {
   color: #4CAF50;
   text-align: center;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .content {
@@ -14,18 +20,166 @@ h1 {
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 20px;
+  min-height: 400px;
+}
+
+/* Doctor selection styles */
+.doctors-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.doctor-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.doctor-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.doctor-card h3 {
+  margin: 0 0 8px 0;
+  color: #4CAF50;
+}
+
+.doctor-card p {
+  margin: 0;
+  color: #666;
+}
+
+/* Message composition styles */
+.selected-doctor {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.selected-doctor h2 {
+  margin: 0 0 8px 0;
+}
+
+.selected-doctor p {
+  margin: 0;
+  color: #666;
+}
+
+.message-form {
+  margin-top: 20px;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .back-button {
-  width: auto;
+  padding: 10px 20px;
+  color: white;
+  background-color: #6c757d;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}
+
+.send-button, .primary-button {
   padding: 10px 20px;
   color: white;
   background-color: #4CAF50;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 16px;
 }
 
-.back-button:hover {
+.send-button:hover, .primary-button:hover {
   background-color: #45a049;
+}
+
+/* Success message styles */
+.success-message {
+  text-align: center;
+}
+
+.success-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.success-content h2 {
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
+.success-content p {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.success-content .button-group {
+  margin-top: 25px;
+  justify-content: center;
+}
+
+/* Error modal styles */
+.error-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.error-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+.error-content h3 {
+  color: #dc3545;
+  margin-top: 0;
+}
+
+.error-content button {
+  margin-top: 15px;
 }

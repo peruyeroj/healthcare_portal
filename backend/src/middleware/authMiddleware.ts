@@ -4,11 +4,17 @@ import jwt from 'jsonwebtoken';
 // JWT secret key from environment variables
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 
-// Extend the Express Request interface to include userId
+// Extend the Express Request interface to include user
 declare global {
   namespace Express {
     interface Request {
       userId?: string;
+      user?: {
+        id: string;
+        email: string;
+        firstName?: string;
+        lastName?: string;
+      };
     }
   }
 }
@@ -28,10 +34,23 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
   try {
     // Verify the token
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const decoded = jwt.verify(token, JWT_SECRET) as { 
+      userId: string;
+      email: string;
+      firstName?: string;
+      lastName?: string;
+    };
     
     // Add the userId to the request object
     req.userId = decoded.userId;
+    
+    // Add the user object to the request
+    req.user = {
+      id: decoded.userId,
+      email: decoded.email,
+      firstName: decoded.firstName,
+      lastName: decoded.lastName
+    };
     
     // Continue to the next middleware or route handler
     next();
