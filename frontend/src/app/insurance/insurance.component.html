@@ -1,0 +1,34 @@
+<div class="insurance-container">
+  <h1>Insurance Information</h1>
+  <form [formGroup]="insuranceForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="insuranceCompany">Insurance Company:</label>
+      <input
+        type="text"
+        id="insuranceCompany"
+        formControlName="insuranceCompany"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="insuranceId">Insurance ID:</label>
+      <input
+        type="text"
+        id="insuranceId"
+        formControlName="insuranceId"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="groupNumber">Group Number:</label>
+      <input
+        type="text"
+        id="groupNumber"
+        formControlName="groupNumber"
+        required
+      />
+    </div>
+    <button type="submit" [disabled]="!insuranceForm.valid">Submit</button>
+    <button (click)="goBack()" class="back-button">Back</button>
+  </form>
+</div>
