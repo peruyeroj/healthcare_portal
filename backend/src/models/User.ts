@@ -9,6 +9,7 @@ export interface IUser extends mongoose.Document {
   lastName: string;
   dateOfBirth?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
+  getFullName(): string;
 }
 
 // Create the user schema
@@ -68,6 +69,11 @@ UserSchema.methods.comparePassword = async function(candidatePassword: string): 
   } catch (error) {
     return false;
   }
+};
+
+// Method to get full name
+UserSchema.methods.getFullName = function(): string {
+  return `${this.firstName} ${this.lastName}`;
 };
 
 // Create and export the User model

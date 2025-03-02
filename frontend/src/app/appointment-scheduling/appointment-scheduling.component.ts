@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { AppointmentService } from '../services/appointment.service';
 
 interface CalendarDay {
@@ -14,7 +15,7 @@ interface CalendarDay {
 @Component({
   selector: 'app-appointment-scheduling',
   standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule],
+  imports: [RouterLink, CommonModule, FormsModule, HttpClientModule],
   templateUrl: './appointment-scheduling.component.html',
   styleUrl: './appointment-scheduling.component.css'
 })
@@ -46,6 +47,24 @@ export class AppointmentSchedulingComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCalendar();
+    
+    // Check if there's a user in localStorage for testing
+    const userInfo = localStorage.getItem('user');
+    if (!userInfo) {
+      console.log('No user found in localStorage. Creating a test user for email testing.');
+      // Create a test user for email testing
+      const testUser = {
+        id: '65e2f5c8a7c12345678901234', // Fake MongoDB ID format
+        email: 'josephcperuyero@gmail.com', // Use your email for testing
+        firstName: 'Joseph',
+        lastName: 'Peruyero',
+        token: 'fake-jwt-token'
+      };
+      localStorage.setItem('user', JSON.stringify(testUser));
+      console.log('Test user created:', testUser);
+    } else {
+      console.log('User found in localStorage:', JSON.parse(userInfo));
+    }
   }
   
   initCalendar(): void {
@@ -197,12 +216,21 @@ export class AppointmentSchedulingComponent implements OnInit {
       createdAt: new Date()
     };
     
-    // Save the appointment
-    this.appointmentService.addAppointment(appointment);
-    
-    // Show confirmation
-    this.showConfirmationDialog = false;
-    this.appointmentConfirmed = true;
+    // Save the appointment and send confirmation email
+    this.appointmentService.addAppointment(appointment).subscribe({
+      next: (response) => {
+        console.log('Appointment created response:', response);
+        // Show confirmation
+        this.showConfirmationDialog = false;
+        this.appointmentConfirmed = true;
+      },
+      error: (error) => {
+        console.error('Error creating appointment:', error);
+        // Still show confirmation since the appointment was saved locally
+        this.showConfirmationDialog = false;
+        this.appointmentConfirmed = true;
+      }
+    });
   }
   
   closeConfirmation(): void {
