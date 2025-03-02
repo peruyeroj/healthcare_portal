@@ -53,6 +53,20 @@ app.use(express.json());
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 
+// Function to limit response to 4-5 sentences
+const limitResponseLength = (text: string): string => {
+  // Split text by sentence-ending punctuation followed by a space or end of string
+  const sentences = text.match(/[^.!?]+[.!?]+(?:\s|$)/g) || [];
+  
+  // If we have more than 5 sentences, limit to 5
+  if (sentences.length > 5) {
+    return sentences.slice(0, 5).join('').trim();
+  }
+  
+  // If we have 4 or fewer sentences, return the original text
+  return text;
+};
+
 // Health-specific system prompt to guide the AI's responses
 const healthSystemPrompt = `You are a helpful healthcare assistant. Provide general health information, wellness tips, and guidance on healthy lifestyle choices. Remember to provide evidence-based information when possible, clarify that you're not a substitute for professional medical advice, be empathetic, respect privacy, avoid making definitive diagnoses, and suggest consulting healthcare professionals for specific medical concerns.`;
 
@@ -129,7 +143,7 @@ app.post("/health", uploads.single("file"), async (req: CustomRequest, res: Cust
     });
 
     // Send an initial message to set the context
-    await chat.sendMessage("You are a helpful healthcare assistant. Please provide accurate health information and remember you're not a substitute for professional medical advice.");
+    await chat.sendMessage("You are a helpful healthcare assistant. Please provide accurate health information and remember you're not a substitute for professional medical advice. Limit your responses to 4-5 sentences maximum.");
 
     // Initialize the prompt with user input
     let parts: (string | InlineImageData)[] = [userInput];
@@ -150,8 +164,11 @@ app.post("/health", uploads.single("file"), async (req: CustomRequest, res: Cust
     const response = await chat.sendMessage(parts);
     const responseText = response.response.text();
 
-    // Send the generated text response to the client
-    res.send(responseText);
+    // Limit response to 4-5 sentences
+    const limitedResponse = limitResponseLength(responseText);
+
+    // Send the limited text response to the client
+    res.send(limitedResponse);
   } catch (error: any) {
     console.error("Error generating health response: ", error); // Log any errors
     
@@ -206,14 +223,17 @@ app.get("/health", async (req: CustomRequest, res: CustomResponse) => {
     });
 
     // Send an initial message to set the context
-    await chat.sendMessage("You are a helpful healthcare assistant. Please provide accurate health information and remember you're not a substitute for professional medical advice.");
+    await chat.sendMessage("You are a helpful healthcare assistant. Please provide accurate health information and remember you're not a substitute for professional medical advice. Limit your responses to 4-5 sentences maximum.");
 
     // Generate content using the AI model in chat mode
     const response = await chat.sendMessage(userInput);
     const responseText = response.response.text();
 
-    // Send the generated text response to the client
-    res.send(responseText);
+    // Limit response to 4-5 sentences
+    const limitedResponse = limitResponseLength(responseText);
+
+    // Send the limited text response to the client
+    res.send(limitedResponse);
   } catch (error: any) {
     console.error("Error generating health response: ", error); // Log any errors
     
