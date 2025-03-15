@@ -1,47 +1,60 @@
-# Use Node.js as the base image
-FROM node:18
+# ==============================
+# Stage 1: Build the application
+# ==============================
+FROM node:18-alpine AS builder
 
-# Set the working directory to /app
 WORKDIR /app
 
-# Copy package.json and package-lock.json for both frontend and backend
+# Install dependencies separately to leverage Docker caching
+COPY frontend/package*.json backend/package*.json ./
 COPY frontend/package*.json ./frontend/
 COPY backend/package*.json ./backend/
 
 # Install dependencies for frontend
 WORKDIR /app/frontend
-RUN npm install
+RUN npm ci
 
 # Install dependencies for backend
 WORKDIR /app/backend
-RUN npm install
+RUN npm ci
 
-# Copy the entire Angular project (including source code and assets)
+# Copy source code
 COPY frontend /app/frontend
 COPY backend /app/backend
 
-# Build the Angular app in production mode
+# Build frontend
 WORKDIR /app/frontend
-RUN npm run build --prod
+RUN npm run build --prod && \
+    mv dist/healthcare-portal/browser/index.csr.html dist/healthcare-portal/browser/index.html
 
-# Install 'serve' globally to serve the built app
-RUN npm install -g serve
-
-# Rename index.csr.html to index.html if necessary
-RUN mv /app/frontend/dist/healthcare-portal/browser/index.csr.html /app/frontend/dist/healthcare-portal/browser/index.html || true
-
-# Install TypeScript globally for backend compilation
+# Install TypeScript globally
 RUN npm install -g typescript
 
-# Compile TypeScript for the backend
+# Build backend (Compile TypeScript)
 WORKDIR /app/backend
 RUN tsc
 
-# Expose port 4200 for accessing the frontend and port 3000 for the backend
-EXPOSE 4200 3000
+# ==============================
+# Stage 2: Create minimal runtime image
+# ==============================
+FROM node:18-alpine
+
+WORKDIR /app
 
 # Install PM2 globally for process management
 RUN npm install -g pm2
 
-# Create a start script to run both frontend and backend concurrently
-CMD pm2 start /app/backend/dist/server.js --name "backend" && pm2 serve /app/frontend/dist/healthcare-portal/browser 4200 --name "frontend" && pm2 logs
+# Copy only necessary files from the builder stage
+COPY --from=builder /app/frontend/dist/healthcare-portal/browser /app/frontend
+COPY --from=builder /app/backend/dist /app/backend
+COPY --from=builder /app/backend/package*.json /app/backend/
+
+# Install only production dependencies for backend
+WORKDIR /app/backend
+RUN npm ci --only=production
+
+# Expose required ports
+EXPOSE 4200 3000
+
+# Start both frontend and backend using PM2
+CMD pm2 start /app/backend/server.js --name "backend" && pm2 serve /app/frontend 4200 --name "frontend" && pm2 logs
