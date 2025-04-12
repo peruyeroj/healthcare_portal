@@ -4,7 +4,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc && cp .env dist/"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
