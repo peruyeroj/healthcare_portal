@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: us-east-1
-  DOCKERHUB_USERNAME: peruyeoj   
+  DOCKERHUB_USERNAME: peruyeroj   
   IMAGE_NAME: healthcare-henmed                 # e.g., myapp
   ECS_SERVICE_FRONTEND: HenMed-Backendv5
   ECS_SERVICE_BACKEND: HenMed-Frontendv5
@@ -33,7 +33,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: peruyeoj
+          username: peruyeroj
           password: Test123456
 
       - name: Build and push Docker image to Docker Hub
