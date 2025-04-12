@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "serve -s frontend/dist/healthcare-portal/browser -l 4200",
-    "build": "ng build && cp .env dist/healthcare-portal/browser",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:healthcare-portal": "node dist/healthcare-portal/server/server.mjs"
