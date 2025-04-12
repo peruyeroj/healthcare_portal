@@ -49,6 +49,9 @@ COPY --from=builder /app/frontend/dist/healthcare-portal/browser /app/frontend
 COPY --from=builder /app/backend/dist /app/backend
 COPY --from=builder /app/backend/package*.json /app/backend/
 
+# 👉 Copy the .env file into the backend folder
+COPY .env /app/backend/.env
+
 # Install only production dependencies for backend
 WORKDIR /app/backend
 RUN npm ci --only=production

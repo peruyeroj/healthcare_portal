@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HealthBotService {
-  private apiUrl = 'http://localhost:3000'; // Backend API URL
+  private apiUrl = environment.apiUrl ; // Backend API URL
 
   constructor(private http: HttpClient) { }
 

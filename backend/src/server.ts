@@ -1,11 +1,13 @@
 // Import required modules and initialize environment variables
 require("dotenv").config(); // Load environment variables from .env file
+import { Request, Response } from "express";
 const express = require("express"); // Web framework for handling HTTP requests
 const path = require("path"); // Utility for handling file paths
 const multer = require("multer"); // Middleware for handling file uploads
 const fs = require("fs"); // File system module for working with files
 const cors = require("cors"); // CORS middleware for cross-origin requests
 const mongoose = require("mongoose"); // MongoDB ODM
+
 
 // Import Google Generative AI SDK
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -56,7 +58,13 @@ if (!process.env.GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Middleware to parse URL-encoded and JSON payloads
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+  origin: 'http://henmed.us', // Allow requests from the specified origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // Allow credentials (cookies, authorization headers, etc.)
+})); 
+// Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -272,67 +280,10 @@ app.post("/health", uploads.single("file"), async (req: CustomRequest, res: Cust
   }
 });
 
-// GET endpoint for health queries (for easier testing in browsers)
-app.get("/health", async (req: CustomRequest, res: CustomResponse) => {
-  const userInput = req.query?.msg; // User's text input from query parameter
-  
-  if (!userInput) {
-    return res.status(400).send("Please provide a 'msg' query parameter with your health question");
-  }
 
-  try {
-    // Get the Generative AI model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
-    // Create a chat session with the appropriate system prompt based on query type
-    const isMedQuery = isMedicationQuery(userInput as string);
-    const systemPrompt = isMedQuery ? medicationPrompt : healthSystemPrompt;
-    
-    const chat = model.startChat({
-      generationConfig: { temperature: 0.7 },
-      safetySettings: [
-        {
-          category: "HARM_CATEGORY_HARASSMENT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-          category: "HARM_CATEGORY_HATE_SPEECH",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE"
-        },
-        {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_MEDIUM_AND_ABOVE"
-        }
-      ]
-    });
 
-    // Send an initial message to set the context
-    await chat.sendMessage(systemPrompt + " Limit your responses to 4-5 sentences maximum.");
-
-    // Generate content using the AI model in chat mode
-    const response = await chat.sendMessage(userInput);
-    const responseText = response.response.text();
-
-    // Limit response to 4-5 sentences
-    const limitedResponse = limitResponseLength(responseText);
-
-    // Send the limited text response to the client
-    res.send(limitedResponse);
-  } catch (error: any) {
-    console.error("Error generating health response: ", error); // Log any errors
-    
-    // Provide more detailed error message
-    let errorMessage = "An error occurred while generating the health response";
-    if (error.message) {
-      errorMessage += `: ${error.message}`;
-    }
-    
-    res.status(500).send(errorMessage);
-  }
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).send('OK');
 });
 
 // Test endpoint to verify server is running

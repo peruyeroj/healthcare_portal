@@ -5,7 +5,7 @@ import { MedicationService, Medication } from '../../services/medication.service
 import { Subscription, timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { SafeUrlPipe } from '../../pipes/safe-url.pipe';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-pending-medications',

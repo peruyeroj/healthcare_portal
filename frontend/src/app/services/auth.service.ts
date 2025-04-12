@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../environments/environment.prod';
 
 interface User {
   id: string;
@@ -21,7 +22,7 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/auth';
+  private apiUrl = environment.apiUrl + '/auth';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private tokenKey = 'healthcare_auth_token';

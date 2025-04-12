@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment.prod';
 
 interface Doctor {
   id: string;
@@ -46,7 +47,7 @@ export class MessagingComponent {
     }
 
     // Send the message to the backend
-    this.http.post('http://localhost:3000/api/messages/send', {
+    this.http.post(environment.apiUrl+ '/api/messages/send', {
       doctorId: this.selectedDoctor.id,
       doctorName: this.selectedDoctor.name,
       message: this.messageContent

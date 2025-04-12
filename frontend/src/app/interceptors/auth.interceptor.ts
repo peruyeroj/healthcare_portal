@@ -9,6 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../environments/environment.prod';
 
 // Class-based interceptor (for backward compatibility)
 @Injectable()
@@ -28,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = this.authService.getToken();
 
     // If the token exists and the request is going to our API
-    if (token && request.url.includes('localhost:3000')) {
+    if (token && request.url.includes(environment.apiUrl )) {
       // Clone the request and add the authorization header
       const authRequest = request.clone({
         setHeaders: {
@@ -58,7 +59,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.getToken();
 
   // If the token exists and the request is going to our API
-  if (token && req.url.includes('localhost:3000')) {
+  if (token && req.url.includes(environment.apiUrl)) {
     // Clone the request and add the authorization header
     const authReq = req.clone({
       setHeaders: {
